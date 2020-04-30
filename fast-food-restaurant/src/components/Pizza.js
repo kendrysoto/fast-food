@@ -1,0 +1,138 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { setFood, setPeople, setQuantity } from '../redux/actions';
+import styled from 'styled-components';
+
+const Pizza = ({ pizza, setFood, setPeople, setQuantity, people, quantity, food, }) => {
+
+const Input = styled.input`
+  padding: 0.5em;
+  margin: 0.5em;
+  color:#3A6073;
+  background: #FFEEEE;
+  border: none;
+  border-radius: 3px;
+`;
+const Button = styled.button`
+  background:  #FFE000;
+  color: #fff;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid #fff;
+  border-radius: 4px;
+`;
+const Title = styled.h1`
+  font-size: 2.5em;
+  text-align: justify;
+  color: #FFEEEE;
+`;
+const Container1 = styled.div`
+  padding: 3em;
+  background: #b92b27;
+  padding-left: 50em;
+`;
+const Label = styled.label`
+text-align: center;
+color:#FFEEEE;
+`;
+const Img = styled.img`
+width: 700px;
+height: 445px;
+
+`;
+const Container2 = styled.div`
+width: 700px;
+height: 360px;
+background: #fff;
+float:left;
+`;
+    return (
+        <div>
+            <Container2>
+                <Img src={pizza.image} alt={pizza.image} />
+            </Container2>
+
+            <Container1 >
+                <Title class="has-text-white-ter is-size-5" >{pizza.name}</Title>
+                <div>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            setQuantity();
+                        }}
+                    >
+                        <div>
+                            <Label >
+                                Número de personas que comerán pizza <br></br>
+                                <Input
+                                    type='number'
+                                    name='personas'
+                                    onChange={(event) => {
+                                        setPeople(event.target.value);
+                                    }}
+                                    value={people}
+                                />
+                            </Label>
+                        </div>
+                        <div >
+                            <Label for='pizzas'>
+                                Cantidad de rebanadas que cada persona comerá
+                             <Input
+                                    type='number'
+                                    name='pizza'
+                                    onChange={(event) => {
+                                        setFood(event.target.value);
+                                    }}
+                                    value={food}
+                                />
+                            </Label>
+                        </div>
+                        <div>
+                            <Button
+                                type='submit'
+                                onClick={setQuantity}
+                            >
+                                Calcular pizzas
+                             </Button>
+                        </div>
+                    </form>
+                    <Label >
+                        La cantidad de pizzas que necesita comprar son: {quantity}
+                    </Label>
+                </div>
+                <div>
+                    <Link to={`/Pizzas/`}>
+                        <Button >volver</Button>
+                    </Link>
+                </div>
+            </Container1>
+        </div>
+    );
+};
+
+const mapStatetoProps = (state) => {
+    return {
+        people: state.people,
+        quantity: state.quantity,
+        food: state.food,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setPeople(value) {
+            dispatch(setPeople(value));
+        },
+        setFood(value) {
+            dispatch(setFood(value));
+        },
+        setQuantity() {
+            dispatch(setQuantity());
+        },
+    };
+};
+
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Pizza);
